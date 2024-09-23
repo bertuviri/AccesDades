@@ -5,6 +5,7 @@
 package Practica1;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -14,14 +15,14 @@ import java.util.Scanner;
 
 /**
  *
- * @author berta
+ * @author BERTA GARCIA VELASCO
  */
 public class Practica1 {
 
     public static void main(String[] args) throws FileNotFoundException {
         
-        File archivoExistente = new File("C:\\Users\\berta\\Desktop\\2º DAM\\Practica1\\prueba.txt");
-        File archivoNoExistente = new File("C:\\Users\\berta\\Desktop\\2º DAM\\Practica1\\prueba2.txt");
+        File archivoExistente = new File("C:\\Users\\berta\\Desktop\\2º DAM\\Practica1\\prueba2.txt");
+        File archivoNoExistente = new File("C:\\Users\\berta\\Desktop\\2º DAM\\Practica1\\prueba.txt");
         
         try {
             if (archivoExistente.exists()){
@@ -43,18 +44,22 @@ public class Practica1 {
             leerConFileReader(archivoNoExistente);
            
             leerConBufferReader(archivoExistente);
-            leerConBufferReader(archivoNoExistente);
+            leerConBufferReader(archivoNoExistente);            
             
+            escribirConFileWriter(archivoExistente);
+            escribirConFileWriter(archivoNoExistente);
             
-            String textoNuevoExistente = "Texto nuevo";
-            String textoNuevoNoExistente = "New text";
+            escribirConBufferedWriter(archivoExistente);
+            escribirConBufferedWriter(archivoNoExistente);
             
+            añadirTextoConFileWriter(archivoExistente);
+            añadirTextoConFileWriter(archivoNoExistente);
             
-            escribirConFileWriter(archivoExistente, textoNuevoExistente);
-            escribirConFileWriter(archivoNoExistente, textoNuevoNoExistente);
-           
+            añadirTextoConBufferedWriter(archivoExistente);
+            añadirTextoConBufferedWriter(archivoNoExistente);
+            
         } catch(IOException e){
-            
+            e.printStackTrace();
         }
     }
     
@@ -65,6 +70,8 @@ public class Practica1 {
         while (sc.hasNextLine()) {
             System.out.println(sc.nextLine());
         }
+        
+        sc.close();
     }
     
     public static void leerConFileReader(File file) throws IOException {
@@ -77,6 +84,7 @@ public class Practica1 {
             System.out.println((char)lectura);
             lectura = reader.read();
         }
+        reader.close();
     }
     
     public static void leerConBufferReader(File file) throws IOException {
@@ -90,16 +98,40 @@ public class Practica1 {
             System.out.println(linia);
             linia = BFreader.readLine();
         }
+        
+        reader.close();
+        BFreader.close();
     }
     
-    public static void escribirConFileWriter(File file, String textoNuevo) throws IOException{
+    public static void escribirConFileWriter(File file) throws IOException{
         
         FileWriter writer = new FileWriter(file);
         
-        writer.write(textoNuevo);
-      
+        writer.write("Escrito con File Writer.\n");
+        writer.close();
+
     }
     
-                    
+    public static void escribirConBufferedWriter(File file) throws IOException{
+          FileWriter writer = new FileWriter(file);
+          BufferedWriter BFwriter = new BufferedWriter(writer);
+          BFwriter.write("Escrito con Buffered Writer.\n");
+          BFwriter.close();
+    }
+    
+    public static void añadirTextoConFileWriter(File file) throws IOException{
+        FileWriter writer = new FileWriter(file, true);
+        
+        writer.write("Texto añadido con File Writer.\n");
+        writer.close();
+    }
+    
+    public static void añadirTextoConBufferedWriter(File file) throws IOException{
+        FileWriter writer = new FileWriter(file, true);
+        
+        BufferedWriter BFwriter = new BufferedWriter(writer);
+        BFwriter.write("Texto añadido con Buffered Writer.\n");
+        BFwriter.close();
+    }
             
 }
